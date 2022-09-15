@@ -2,195 +2,195 @@ import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class TalentSubmission {
-  @Field()
+  @Field({ nullable: true })
   elementId?: number;
-  @Field()
+  @Field({ nullable: true })
   elementName?: string;
-  @Field()
+  @Field({ nullable: true })
   folderId?: number;
-  @Field()
+  @Field({ nullable: true })
   folderName?: string;
-  @Field()
+  @Field({ nullable: true })
   jobTypeDescr?: string;
-  @Field()
+  @Field({ nullable: true })
   jobId?: number;
-  @Field()
+  @Field({ nullable: true })
   jobName?: string;
-  @Field()
+  @Field({ nullable: true })
   postedOn?: string;
-  @Field()
+  @Field({ nullable: true })
   seekingSubmissionFrom?: string;
   @Field(() => [String],{ nullable: true, })
   seekingSubmissionFromArray?: string[];
-  @Field()
+  @Field({ nullable: true })
   firstShootDate?: string;
-  @Field()
+  @Field({ nullable: true })
   firstShootDateTimezone?: string;
-  @Field()
+  @Field({ nullable: true })
   unionStatus?: string;
-  @Field()
+  @Field({ nullable: true })
   roleRate?: string;
-  @Field()
+  @Field({ nullable: true })
   roleNote?: string;
-  @Field()
+  @Field({ nullable: true })
   roleGender?: string;
   @Field(() => [String],{ nullable: true, })
   roleGenders?: string[];
-  @Field()
+  @Field({ nullable: true })
   roleEthnicity?: string;
   @Field(() => [String], { nullable: true, })
   roleEthnicities?: string[];
-  @Field()
+  @Field({ nullable: true })
   roleFromAge?: number;
-  @Field()
+  @Field({ nullable: true })
   roleToAge?: number;
-  @Field()
+  @Field({ nullable: true })
   expiryDate?: string;
-  @Field()
+  @Field({ nullable: true })
   rushCallInd?: number;
-  @Field()
+  @Field({ nullable: true })
   lastViewedOn?: string;
-  @Field()
+  @Field({ nullable: true })
   extraTypeNo?: number;
-  @Field()
+  @Field({ nullable: true })
   standInInd?: number;
-  @Field()
+  @Field({ nullable: true })
   briefDetail?: string;
-  @Field()
+  @Field({ nullable: true })
   newJobInd?: number;
-  @Field()
+  @Field({ nullable: true })
   folderElementInstanceId?: number;
-  @Field()
+  @Field({ nullable: true })
   dateApplied?: string;
-  @Field()
+  @Field({ nullable: true })
   dateLastRequest?: string;
-  @Field()
+  @Field({ nullable: true })
   dateLastRequestOrApplied?: string;
-  @Field()
+  @Field({ nullable: true })
   generalNoticeReadCount?: number;
-  @Field()
+  @Field({ nullable: true })
   generalNoticeUnreadCount?: number;
-  @Field()
+  @Field({ nullable: true })
   infoRequestsRespondedCount?: number;
-  @Field()
+  @Field({ nullable: true })
   infoRequestsPendingCount?: number;
-  @Field()
+  @Field({ nullable: true })
   availabilityRequestsCount?: number;
-  @Field()
+  @Field({ nullable: true })
   availabilityRequestsAvailableCount?: number;
-  @Field()
+  @Field({ nullable: true })
   availabilityRequestsPendingCount?: number;
-  @Field()
+  @Field({ nullable: true })
   bookingRequestsCount?: number;
-  @Field()
+  @Field({ nullable: true })
   bookingRequestsAvailableCount?: number;
-  @Field()
+  @Field({ nullable: true })
   bookingRequestsPendingCount?: number;
-  @Field()
+  @Field({ nullable: true })
   callTimesUnread?: number;
-  @Field()
+  @Field({ nullable: true })
   callTimesRead?: number;
-  @Field()
+  @Field({ nullable: true })
   callTimesCancelled?: number;
 }
 
 
 @ObjectType()
 export class TalentProfile {
-  @Field()
+  @Field({ nullable: true })
   elementId?: number;
-  @Field()
+  @Field({ nullable: true })
   elementName?: string;
-  @Field()
+  @Field({ nullable: true })
   firstName?: string;
-  @Field()
+  @Field({ nullable: true })
   lastName?: string;
-  @Field()
+  @Field({ nullable: true })
   legalName?: string;
-  @Field()
+  @Field({ nullable: true })
   gender?: string;
-  @Field()
+  @Field({ nullable: true })
   modelDOB?: string;
-  @Field()
+  @Field({ nullable: true })
   playingAge?: number;
-  @Field()
+  @Field({ nullable: true })
   destinationID?: number;
-  @Field()
+  @Field({ nullable: true })
   unionNo?: number;
-  @Field()
+  @Field({ nullable: true })
   notificationsViaEmail?: boolean;
-  @Field()
+  @Field({ nullable: true })
   notificationsViaApp?: boolean;
-  @Field()
+  @Field({ nullable: true })
   marketingViaEmail?: boolean;
-  @Field()
+  @Field({ nullable: true })
   hair?: number;
-  @Field()
+  @Field({ nullable: true })
   eye?: number;
-  @Field()
+  @Field({ nullable: true })
   heightCentimeters?: number;
-  @Field()
+  @Field({ nullable: true })
   heightInches?: number;
-  @Field()
+  @Field({ nullable: true })
   ethnicity?: string;
-  @Field()
-  ethnicityList?: string;
-  @Field()
+  @Field(()=> [String],{ nullable: true })
+  ethnicityList?: string[];
+  @Field({ nullable: true })
   inSeam?: number;
-  @Field()
+  @Field({ nullable: true })
   outSeam?: number;
-  @Field()
+  @Field({ nullable: true })
   clothingSize?: number;
-  @Field()
+  @Field({ nullable: true })
   chest?: number;
-  @Field()
+  @Field({ nullable: true })
   bust?: number;
-  @Field()
+  @Field({ nullable: true })
   collar?: number;
-  @Field()
+  @Field({ nullable: true })
   sleeve?: number;
-  @Field()
+  @Field({ nullable: true })
   unionRegistrationNo?: string;
-  @Field()
+  @Field({ nullable: true })
   unionRegistrationName?: string;
-  @Field()
+  @Field({ nullable: true })
   suit?: number;
-  @Field()
+  @Field({ nullable: true })
   suitCut?: string;
-  @Field()
+  @Field({ nullable: true })
   cupSize?: string;
-  @Field()
+  @Field({ nullable: true })
   waist?: number;
-  @Field()
+  @Field({ nullable: true })
   weight?: number;
-  @Field()
+  @Field({ nullable: true })
   mobileNumber?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceCountry?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceState?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceCity?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceLatitude?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceLongitude?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceAddress?: string;
-  @Field()
+  @Field({ nullable: true })
   googlePlaceID?: string;
-  @Field()
+  @Field({ nullable: true })
   dressSize?: number;
-  @Field()
+  @Field({ nullable: true })
   hips?: number;
-  @Field()
+  @Field({ nullable: true })
   shoe?: number;
-  @Field()
+  @Field({ nullable: true })
   medicalCovidTestExempt?: boolean;
-  @Field()
+  @Field({ nullable: true })
   looksLike?: string;
-  @Field()
-  looksLikeList?: string;
+  @Field(()=>[String],{ nullable: true })
+  looksLikeList?: string[];
 }
 
 @ObjectType()
@@ -199,34 +199,34 @@ export class Talent {
   accountID!: number;
   @Field()
   ymcO_ElementID!: number;
-  @Field()
+  @Field({ nullable: true })
   parent_YMCO_ElementID?: number;
-  @Field()
+  @Field({ nullable: true })
   linkCode?: string;
-  @Field()
+  @Field({ nullable: true })
   linkStatus?: number;
   @Field()
   elementName!: string;
-  @Field()
+  @Field({ nullable: true })
   description?: string;
-  @Field()
+  @Field({ nullable: true })
   ymcO_SupplierID?: number;
-  @Field()
+  @Field({ nullable: true })
   supplierName?: string;
   @Field()
   email!: string;
   @Field()
   dateCreated!: string;
-  @Field()
+  @Field({ nullable: true })
   ymcO_ElementTypeNo?: number;
-  @Field()
+  @Field({ nullable: true })
   syngency_ModelID?: number;
-  @Field()
+  @Field({ nullable: true })
   syngency_UserID?: number;
-  @Field()
+  @Field({ nullable: true })
   stripe_Customer?: string;
 
-  @Field()
+  @Field({ nullable: true })
   profile?: TalentProfile;
 
   @Field(() => [TalentSubmission])

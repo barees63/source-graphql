@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "querystring";
-import { Talent, TalentProfile } from "./talent/talent.schema";
+import {Talent, TalentProfile, TalentSubmission} from "./talent/talent.schema";
 
 const baseUrl = "https://source-api.syngency.com";
 
@@ -89,7 +89,7 @@ export const getTalentProfiles = async (
 export const getTalentSubmissions = async (
   token: string,
   talentId: number
-): Promise<TalentProfile[]> => {
+): Promise<TalentSubmission[]> => {
   try {
     const response = await axios.get(
       `${baseUrl}/api/talentportal/submissions/${talentId}?pagenumber=1`,
