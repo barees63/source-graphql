@@ -1,6 +1,11 @@
 import axios from "axios";
 import qs from "querystring";
-import {Talent, TalentProfile, TalentSubmission} from "./talent/talent.schema";
+import {
+  Talent,
+  TalentProfile,
+  TalentSubmission,
+} from "./talent/talent.schema";
+import {Job} from "./job/job.schema";
 
 const baseUrl = "https://source-api.syngency.com";
 
@@ -49,7 +54,7 @@ export const login = async (
   }
 };
 
-export const getTalent = async (token: string): Promise<Talent[]> => {
+export const apiGetTalent = async (token: string): Promise<Talent[]> => {
   const response = await axios.get(`${baseUrl}/api/userelements`, {
     validateStatus: function () {
       return true;
@@ -67,7 +72,7 @@ export const getTalent = async (token: string): Promise<Talent[]> => {
   return [];
 };
 
-export const getTalentProfiles = async (
+export const apiGetTalentProfiles = async (
   token: string
 ): Promise<TalentProfile[]> => {
   const response = await axios.get(`${baseUrl}/api/userelementprofiledetails`, {
@@ -86,7 +91,7 @@ export const getTalentProfiles = async (
   }
   return [];
 };
-export const getTalentSubmissions = async (
+export const apiGetTalentSubmissions = async (
   token: string,
   talentId: number
 ): Promise<TalentSubmission[]> => {
@@ -105,10 +110,38 @@ export const getTalentSubmissions = async (
       }
     );
     if (response.status === 200) {
-      return response.data.recordset??[];
+      return response.data.recordset ?? [];
     }
   } catch (e) {
     console.error(e);
   }
   return [];
+};
+
+export const apiGetJob = async (
+  token: string,
+  talentId: number,
+  jobId: number
+): Promise<Job|null> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/roles/${jobId}/element/${talentId}`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset[0];
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
 };

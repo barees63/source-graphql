@@ -1,11 +1,11 @@
 // noinspection UnnecessaryLocalVariableJS
 
-import { Query, Resolver, Authorized, Ctx } from "type-graphql";
-import { Talent, TalentProfile, TalentSubmission } from "./talent.schema";
+import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql";
+import { Talent, TalentSubmission } from "./talent.schema";
 import {
-  getTalent,
-  getTalentProfiles,
-  getTalentSubmissions,
+  apiGetTalent,
+  apiGetTalentProfiles,
+  apiGetTalentSubmissions,
 } from "../source_api";
 import { Context } from "../context";
 
@@ -13,20 +13,27 @@ import { Context } from "../context";
 export class TalentResolver {
   @Authorized()
   @Query(() => [Talent])
-  async getTalent(@Ctx() context: Context): Promise<Talent[]> {
+  async getTalents(
+    @Arg("includeSubmissions", { defaultValue: true })
+    includeSubmissions: boolean,
+    @Ctx() context: Context
+  ): Promise<Talent[]> {
     try {
-      let talents = await getTalent(context.token);
-      let profiles = await getTalentProfiles(context.token);
+      const talents = await apiGetTalent(context.token);
+      const profiles = await apiGetTalentProfiles(context.token);
+      let submissions: TalentSubmission[][] = [];
       // get submissions
-      const promises = [];
-      for (let talent of talents) {
-        promises.push(
-          getTalentSubmissions(context.token, talent.ymcO_ElementID)
-        );
+      if (includeSubmissions) {
+        const promises = [];
+        for (const talent of talents) {
+          promises.push(
+            apiGetTalentSubmissions(context.token, talent.ymcO_ElementID)
+          );
+        }
+        submissions = await Promise.all(promises);
       }
-      const submissions: TalentSubmission[][] = await Promise.all(promises);
 
-      for (let talent of talents) {
+      for (const talent of talents) {
         talent.profile = profiles?.find(
           (p) => p.elementId == talent.ymcO_ElementID
         );
@@ -35,6 +42,24 @@ export class TalentResolver {
         );
       }
       return talents;
+    } catch (e) {
+      console.error(e);
+    }
+    return [];
+  }
+}
+
+@Resolver(() => TalentSubmission)
+export class TalentSubmissionResolver {
+  @Authorized()
+  @Query(() => [TalentSubmission])
+  async getTalentSubmissions(
+    @Arg("talentId") talentId: number,
+    @Ctx() context: Context
+  ): Promise<TalentSubmission[]> {
+    try {
+      const submissions = apiGetTalentSubmissions(context.token, talentId);
+      return submissions;
     } catch (e) {
       console.error(e);
     }

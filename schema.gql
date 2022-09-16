@@ -3,8 +3,52 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Job {
+  briefDetail: String
+  covidTestDates: String
+  covidTestDatesTimezones: String
+  dateApplied: String
+  displayOnPortal: Float
+  expiryDate: String
+  extraTypeNo: Float
+  firstShootDate: String
+  firstShootDateTimezone: String
+  folderId: Float!
+  folderName: String!
+  folderObjectID: String!
+  hasApplied: Float!
+  isPayingRoleInd: Float
+  jobId: Float!
+  jobName: String!
+  jobTypeDescr: String!
+  lastViewedOn: String
+  newJobInd: Float
+  openCallInd: Float
+  postedOn: String!
+  roleBumps: [String!]
+  roleEthnicities: [String!]
+  roleFromAge: Float
+  roleGenders: [String!]
+  roleNote: String
+  roleRate: String
+  roleToAge: Float
+  rushCallInd: Float
+  seekingSubmissionFromArray: [String!]
+  shootDates: String
+  shootDatesTimezones: String
+  siteDetails: String
+  siteInd: Float
+  standInInd: Float
+  synopsis: String!
+  talentSubmissionInstruction: String
+  unionStatus: String
+  workRequirements: String
+}
+
 type Query {
-  getTalent: [Talent!]!
+  getJob(jobId: Float!, talentId: Float!): Job!
+  getTalentSubmissions(talentId: Float!): [TalentSubmission!]!
+  getTalents(includeSubmissions: Boolean = true): [Talent!]!
 }
 
 type Talent {
@@ -18,7 +62,7 @@ type Talent {
   parent_YMCO_ElementID: Float
   profile: TalentProfile
   stripe_Customer: String
-  submissions: [TalentSubmission!]!
+  submissions: [TalentSubmission!]
   supplierName: String
   syngency_ModelID: Float
   syngency_UserID: Float

@@ -20,7 +20,7 @@ export class TalentSubmission {
   postedOn?: string;
   @Field({ nullable: true })
   seekingSubmissionFrom?: string;
-  @Field(() => [String],{ nullable: true, })
+  @Field(() => [String], { nullable: true })
   seekingSubmissionFromArray?: string[];
   @Field({ nullable: true })
   firstShootDate?: string;
@@ -34,11 +34,11 @@ export class TalentSubmission {
   roleNote?: string;
   @Field({ nullable: true })
   roleGender?: string;
-  @Field(() => [String],{ nullable: true, })
+  @Field(() => [String], { nullable: true })
   roleGenders?: string[];
   @Field({ nullable: true })
   roleEthnicity?: string;
-  @Field(() => [String], { nullable: true, })
+  @Field(() => [String], { nullable: true })
   roleEthnicities?: string[];
   @Field({ nullable: true })
   roleFromAge?: number;
@@ -94,7 +94,6 @@ export class TalentSubmission {
   callTimesCancelled?: number;
 }
 
-
 @ObjectType()
 export class TalentProfile {
   @Field({ nullable: true })
@@ -133,7 +132,7 @@ export class TalentProfile {
   heightInches?: number;
   @Field({ nullable: true })
   ethnicity?: string;
-  @Field(()=> [String],{ nullable: true })
+  @Field(() => [String], { nullable: true })
   ethnicityList?: string[];
   @Field({ nullable: true })
   inSeam?: number;
@@ -189,7 +188,7 @@ export class TalentProfile {
   medicalCovidTestExempt?: boolean;
   @Field({ nullable: true })
   looksLike?: string;
-  @Field(()=>[String],{ nullable: true })
+  @Field(() => [String], { nullable: true })
   looksLikeList?: string[];
 }
 
@@ -229,6 +228,7 @@ export class Talent {
   @Field({ nullable: true })
   profile?: TalentProfile;
 
-  @Field(() => [TalentSubmission])
+  @Field(() => [TalentSubmission], { nullable: true })
   submissions?: TalentSubmission[];
 }
+

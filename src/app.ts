@@ -2,13 +2,14 @@ import express from "express";
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { graphqlHTTP } from "express-graphql";
-import { TalentResolver } from "./talent/talent.resolvers";
+import {TalentResolver,TalentSubmissionResolver} from "./talent/talent.resolvers";
 import { buildSchema } from "type-graphql";
 import { customAuthChecker } from "./auth";
+import {JobResolver} from "./job/job.resolvers";
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [TalentResolver],
+    resolvers: [TalentResolver,TalentSubmissionResolver,JobResolver],
     emitSchemaFile: true,
     authChecker: customAuthChecker,
   });
@@ -32,7 +33,7 @@ async function main() {
   const port = process.env.PORT ?? 8080;
 
   app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
   });
 }
 
