@@ -5,7 +5,15 @@ import {
   TalentProfile,
   TalentSubmission,
 } from "./talent/talent.schema";
-import {Job} from "./job/job.schema";
+import {
+  AvailabilityRequest,
+  BookingRequest,
+  CallTime,
+  CallTimeItem,
+  GeneralNotice,
+  InformationRequest,
+  Job
+} from "./job/job.schema";
 
 const baseUrl = "https://source-api.syngency.com";
 
@@ -144,4 +152,166 @@ export const apiGetJob = async (
     console.error(e);
   }
   return null;
+};
+
+export const apiGetInformationRequests = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<InformationRequest[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/inforequests`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetAvailabilityRequests = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<AvailabilityRequest[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/availabilityrequests`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetBookingRequests = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<BookingRequest[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/bookingrequests`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetGeneralNotices = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<GeneralNotice[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/generalnotices/0`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetCallTimes = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<CallTime[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/calltimes`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetCallTimeItems = async (
+  token: string,
+  folderElementInstanceId: number,
+): Promise<CallTimeItem[]> => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/talentportal/submissions/${folderElementInstanceId}/calltimeitems`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.recordset;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
 };

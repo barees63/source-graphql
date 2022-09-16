@@ -3,8 +3,159 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AvailabilityRequest {
+  eventDescription: String
+  extrasWorksheetElementId: Float!
+  extrasWorksheetId: Float!
+  extrasWorksheetRecipients: Float!
+  extrasWorksheetRecipientsDone: Float!
+  extrasWorksheetRequestDate: String!
+  extrasWorksheetRequestDescr: String!
+  extrasWorksheetRequestId: Float!
+  extrasWorksheetRequestTypeNo: Float!
+  folderElementInstanceId: Float!
+  jobDateID: Float
+  message: String
+  requestStatusNo: Float!
+  responseWorksheetCovidTestStatusNo: Float
+  responseWorksheetStatusNo: Float
+  shootDate: String!
+  shootDateTimezone: String
+  updateIfRequestInd: Float!
+  updateWorksheetStatusNo: Float!
+  worksheetCovidTestStatusNo: Float
+  worksheetStatusNo: Float!
+}
+
+type BookingRequest {
+  extrasWorksheetElementId: Float!
+  extrasWorksheetId: Float!
+  extrasWorksheetRecipients: Float!
+  extrasWorksheetRecipientsDone: Float!
+  extrasWorksheetRequestDate: String!
+  extrasWorksheetRequestDescr: String!
+  extrasWorksheetRequestId: Float!
+  extrasWorksheetRequestTypeNo: Float!
+  folderElementInstanceId: Float!
+  jobDateID: Float!
+  message: String
+  requestStatusNo: Float!
+  responseWorksheetStatusNo: Float
+  shootDate: String!
+  shootDateTimezone: String
+  updateIfRequestInd: Float!
+  updateWorksheetStatusNo: Float!
+  worksheetStatusNo: Float!
+}
+
+type CallTime {
+  address: String
+  callTime: String
+  callTimeTo: String
+  callTimeTypeNo: Float!
+  calltimeSendInd: Float!
+  checkinNumber: Float
+  city: String
+  country: String
+  eventDate: String!
+  eventDateTimezone: String!
+  extrasWorksheetElementId: Float!
+  folderElementInstanceId: Float!
+  googlePlaceID: String
+  items: [CallTimeItem!]
+  latitude: String
+  longitude: String
+  state: String
+}
+
+type CallTimeItem {
+  address: String
+  attachmentList: String
+  callTime: String
+  callTimeItemTypeNo: Float!
+  callTimeTypeNo: Float!
+  calltimeSendInd: Float!
+  city: String
+  country: String
+  createdByUserId: Float!
+  createdOn: String!
+  eventDate: String!
+  eventDateTimezone: String
+  extrasWorksheetCallTimeItemId: Float!
+  extrasWorksheetElementId: Float!
+  extrasWorksheetID: Float!
+  folderList: String
+  fullName: String
+  googlePlaceID: String
+  itemSentInd: Float!
+  latitude: String
+  longitude: String
+  notes: String
+  state: String
+  title: String
+}
+
+type GeneralNotice {
+  delivered: Float!
+  deliveredDate: String
+  elementId: Float
+  elementImage: String
+  elementName: String!
+  extrasWorksheetElementId: Float!
+  extrasWorksheetRequestDescr: String!
+  extrasWorksheetRequestId: Float!
+  extrasWorksheetRequestTypeNo: Float!
+  folderElementId: Float!
+  folderId: Float!
+  folderName: String!
+  message: String!
+  opened: Float!
+  openedDate: String
+  requestStatusNo: Float!
+  respondedOn: String
+  responseSeenByUserId: Float
+  responseSeenOn: String
+  responseText: String
+  sentByCompanyName: String!
+  sentByName: String!
+  sentOn: String!
+  shootDate: String
+  subject: String!
+  timezone: String!
+}
+
+type InformationRequest {
+  attachmentUrl: String
+  customColumnId: String!
+  extrasWorksheetElementId: Float!
+  extrasWorksheetId: Float!
+  extrasWorksheetRecipients: Float!
+  extrasWorksheetRecipientsDone: Float!
+  extrasWorksheetRequestDate: String!
+  extrasWorksheetRequestDescr: String!
+  extrasWorksheetRequestId: Float!
+  extrasWorksheetRequestTypeNo: Float!
+  fieldName: String!
+  fieldType: String!
+  fieldValues: String!
+  folderElementInstanceId: Float!
+  jobDateID: Float
+  requestQuestion: String!
+  requestStatusNo: Float!
+  requireMediaInd: String!
+  requireMediaNote: String!
+  respondedOn: String
+  savedValue: String!
+  updateIfRequestInd: Float!
+  updateWorksheetStatusNo: Float!
+  worksheetStatusNo: Float!
+}
+
 type Job {
+  availabilityRequests: [AvailabilityRequest!]
+  bookingRequests: [BookingRequest!]
   briefDetail: String
+  callTimes: [CallTime!]
   covidTestDates: String
   covidTestDatesTimezones: String
   dateApplied: String
@@ -16,7 +167,9 @@ type Job {
   folderId: Float!
   folderName: String!
   folderObjectID: String!
+  generalNotices: [GeneralNotice!]
   hasApplied: Float!
+  informationRequests: [InformationRequest!]
   isPayingRoleInd: Float
   jobId: Float!
   jobName: String!
@@ -46,7 +199,7 @@ type Job {
 }
 
 type Query {
-  getJob(jobId: Float!, talentId: Float!): Job!
+  getJob(folderElementInstanceId: Float, jobId: Float!, talentId: Float!): Job!
   getTalentSubmissions(talentId: Float!): [TalentSubmission!]!
   getTalents(includeSubmissions: Boolean = true): [Talent!]!
 }
