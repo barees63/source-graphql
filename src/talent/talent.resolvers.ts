@@ -3,6 +3,7 @@
 import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql";
 import { Talent, TalentSubmission } from "./talent.schema";
 import {
+  apiGetCallTimes,
   apiGetTalent,
   apiGetTalentProfiles,
   apiGetTalentSubmissions,
@@ -55,10 +56,25 @@ export class TalentSubmissionResolver {
   @Query(() => [TalentSubmission])
   async getTalentSubmissions(
     @Arg("talentId") talentId: number,
+    @Arg("includeCalltimes", { defaultValue: false }) includeCalltimes: boolean,
     @Ctx() context: Context
   ): Promise<TalentSubmission[]> {
     try {
-      const submissions = apiGetTalentSubmissions(context.token, talentId);
+      const submissions = await apiGetTalentSubmissions(context.token, talentId);
+      if (includeCalltimes) {
+        const promises = [];
+        for (const s of submissions) {
+          if (s.folderElementInstanceId) {
+            promises.push(
+              apiGetCallTimes(context.token, s.folderElementInstanceId)
+            );
+          }
+        }
+        const calltimes = await Promise.all(promises);
+        for (let i = 0; i < submissions.length; i++) {
+          submissions[i].callTimes = calltimes[i];
+        }
+      }
       return submissions;
     } catch (e) {
       console.error(e);

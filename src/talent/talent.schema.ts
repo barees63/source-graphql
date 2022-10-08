@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
+import {CallTime} from "../job/job.schema";
 
 @ObjectType()
 export class TalentSubmission {
@@ -92,6 +93,9 @@ export class TalentSubmission {
   callTimesRead?: number;
   @Field({ nullable: true })
   callTimesCancelled?: number;
+
+  @Field(()=>[CallTime],{nullable: true})
+  callTimes?: CallTime[];
 }
 
 @ObjectType()

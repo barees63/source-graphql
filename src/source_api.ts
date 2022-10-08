@@ -12,8 +12,13 @@ import {
   CallTimeItem,
   GeneralNotice,
   InformationRequest,
-  Job
+  Job,
 } from "./job/job.schema";
+import {
+  YouMeCoNotification,
+  YouMeCoTalent,
+  YouMeCoTalentOverview,
+} from "./youmeco/youmeco_talent.schema";
 
 const baseUrl = "https://source-api.syngency.com";
 
@@ -130,7 +135,7 @@ export const apiGetJob = async (
   token: string,
   talentId: number,
   jobId: number
-): Promise<Job|null> => {
+): Promise<Job | null> => {
   try {
     const response = await axios.get(
       `${baseUrl}/api/talentportal/roles/${jobId}/element/${talentId}`,
@@ -156,7 +161,7 @@ export const apiGetJob = async (
 
 export const apiGetInformationRequests = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<InformationRequest[]> => {
   try {
     const response = await axios.get(
@@ -183,7 +188,7 @@ export const apiGetInformationRequests = async (
 
 export const apiGetAvailabilityRequests = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<AvailabilityRequest[]> => {
   try {
     const response = await axios.get(
@@ -210,7 +215,7 @@ export const apiGetAvailabilityRequests = async (
 
 export const apiGetBookingRequests = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<BookingRequest[]> => {
   try {
     const response = await axios.get(
@@ -237,7 +242,7 @@ export const apiGetBookingRequests = async (
 
 export const apiGetGeneralNotices = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<GeneralNotice[]> => {
   try {
     const response = await axios.get(
@@ -264,7 +269,7 @@ export const apiGetGeneralNotices = async (
 
 export const apiGetCallTimes = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<CallTime[]> => {
   try {
     const response = await axios.get(
@@ -291,7 +296,7 @@ export const apiGetCallTimes = async (
 
 export const apiGetCallTimeItems = async (
   token: string,
-  folderElementInstanceId: number,
+  folderElementInstanceId: number
 ): Promise<CallTimeItem[]> => {
   try {
     const response = await axios.get(
@@ -314,4 +319,85 @@ export const apiGetCallTimeItems = async (
     console.error(e);
   }
   return [];
+};
+export const apiGetYouMeCoNotifications = async (
+  token: string,
+  elementId: number,
+  supplierId: number
+): Promise<YouMeCoNotification[]> => {
+  try {
+    const response = await axios.get(
+      `https://source-api.syngency.com/api/supplierelementnotifications?ymco_supplierId=${supplierId}&ymco_elementId=${elementId}`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      //console.log(JSON.stringify(response.data))
+      return response.data;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return [];
+};
+
+export const apiGetYouMeCoTalentOverview = async (
+  token: string,
+  elementId: number
+): Promise<YouMeCoTalentOverview | null> => {
+  try {
+    const response = await axios.get(
+      `https://www.youmeandco.com/api/2/mobile/elements.asp?api-key=d459fdf9-5891-4561-b88a-a8567a3438ef&method=getprofileoverview&elementId=${elementId}`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      //console.log(JSON.stringify(response.data))
+      return response.data;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
+};
+export const apiGetYouMeCoTalents = async (
+  token: string
+): Promise<[YouMeCoTalent] | null> => {
+  try {
+    const response = await axios.get(
+      `https://source-api.syngency.com/api/userelements`,
+      {
+        validateStatus: function () {
+          return true;
+        },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
 };

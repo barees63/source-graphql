@@ -200,8 +200,10 @@ type Job {
 
 type Query {
   getJob(folderElementInstanceId: Float, jobId: Float!, talentId: Float!): Job!
-  getTalentSubmissions(talentId: Float!): [TalentSubmission!]!
+  getTalentSubmissions(includeCalltimes: Boolean = false, talentId: Float!): [TalentSubmission!]!
   getTalents(includeSubmissions: Boolean = true): [Talent!]!
+  getYouMeCoNotifications(elementIds: [Float!]!, supplierIds: [Float!]!): [YouMeCoNotification!]!
+  getYouMeCoTalent: [YouMeCoTalent!]!
 }
 
 type Talent {
@@ -282,6 +284,7 @@ type TalentSubmission {
   bookingRequestsCount: Float
   bookingRequestsPendingCount: Float
   briefDetail: String
+  callTimes: [CallTime!]
   callTimesCancelled: Float
   callTimesRead: Float
   callTimesUnread: Float
@@ -320,4 +323,63 @@ type TalentSubmission {
   seekingSubmissionFromArray: [String!]
   standInInd: Float
   unionStatus: String
+}
+
+type YouMeCoNotification {
+  createdOn: String
+  deliveredOn: String
+  elementName: String
+  message1: String
+  message2: String
+  message3: String
+  notificationID: Float
+  notificationResponseID: Float
+  notificationTypeDescr: String
+  notificationTypeID: Float
+  readOn: String
+  responseDescr: String
+  responseOn: String
+  responsePositiveInd: Float
+  responseText: String
+  subject: String
+  ymcO_ElementID: Float
+  ymcO_LinkID: Float
+  ymcO_LinkID2: Float
+  ymcO_SupplierID: Float
+}
+
+type YouMeCoTalent {
+  accountID: Float!
+  batchNo: Float
+  dateCreated: String
+  description: String
+  elementName: String
+  email: String
+  lastInviteDate: String
+  linkCode: String
+  linkStatus: Float
+  matchedElementsSupplierNameList: String
+  overview: YouMeCoTalentOverview
+  parent_YMCO_ElementID: Float
+  stripe_Customer: String
+  supplierName: String
+  syngency_ModelID: Float
+  syngency_UserID: Float
+  ymcO_ElementID: Float!
+  ymcO_ElementTypeNo: Float
+  ymcO_SupplierID: Float
+}
+
+type YouMeCoTalentOverview {
+  AbilityCount: Float
+  Availability: String
+  ContactDetailsComplete: Float
+  CreditCount: Float
+  ProfileDetailsComplete: Float
+  ProfileImage_BodyShot: String
+  ProfileImage_BodyShot_AgencyApproveStatus: Float
+  ProfileImage_Headshot: String
+  ProfileImage_Headshot_AgencyApproveStatus: Float
+  Supplier_Logo: String
+  Supplier_Name: String
 }
