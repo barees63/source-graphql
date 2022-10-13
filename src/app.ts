@@ -39,6 +39,10 @@ async function main() {
     })
   );
 
+  app.get('/',(req,res) => {
+    res.send('got get');
+  });
+
   dotenv.config();
   const port = process.env.PORT ?? 8080;
 
