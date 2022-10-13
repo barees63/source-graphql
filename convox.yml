@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    port: 8080
+    scale:
+      count: 1
