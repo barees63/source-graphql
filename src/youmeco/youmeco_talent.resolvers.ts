@@ -3,7 +3,6 @@
 import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql";
 import { YouMeCoNotification, YouMeCoTalent } from "./youmeco_talent.schema";
 import {
-  apiGetTalent,
   apiGetYouMeCoNotifications,
   apiGetYouMeCoTalentOverview,
   apiGetYouMeCoTalents,
@@ -46,7 +45,7 @@ export class YouMeCoTalentResolver {
     try {
       const talents = (await apiGetYouMeCoTalents(context.token)) ?? [];
       const promises = [];
-      for (let talent of talents) {
+      for (const talent of talents) {
         promises.push(
           apiGetYouMeCoTalentOverview(context.token, talent.ymcO_ElementID)
         );
