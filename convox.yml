@@ -4,3 +4,4 @@ services:
     port: 8080
     scale:
       count: 1
+    domain: api.sourceandcast.com
