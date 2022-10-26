@@ -196,7 +196,7 @@ export class TalentProfile {
   looksLikeList?: string[];
 
   @Field({ nullable: true })
-  medicalCovidVaccinationStatusNo?: string;
+  medicalCovidVaccinationStatusNo?: number;
 }
 
 @ObjectType()
