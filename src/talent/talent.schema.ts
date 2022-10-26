@@ -194,6 +194,9 @@ export class TalentProfile {
   looksLike?: string;
   @Field(() => [String], { nullable: true })
   looksLikeList?: string[];
+
+  @Field({ nullable: true })
+  medicalCovidVaccinationStatusNo?: string;
 }
 
 @ObjectType()

@@ -78,7 +78,6 @@ export const apiGetTalent = async (token: string): Promise<Talent[]> => {
       authorization: `Bearer ${token}`,
     },
   });
-  console.log(response.status);
   if (response.status === 200) {
     return response.data;
   }
