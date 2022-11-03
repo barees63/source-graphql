@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import {CallTime} from "../job/job.schema";
+import { CallTime } from "../job/job.schema";
 
 @ObjectType()
 export class TalentSubmission {
@@ -94,7 +94,7 @@ export class TalentSubmission {
   @Field({ nullable: true })
   callTimesCancelled?: number;
 
-  @Field(()=>[CallTime],{nullable: true})
+  @Field(() => [CallTime], { nullable: true })
   callTimes?: CallTime[];
 }
 
@@ -118,6 +118,9 @@ export class TalentProfile {
   playingAge?: number;
   @Field({ nullable: true })
   destinationID?: number;
+
+  @Field(() => [String], { nullable: true })
+  destinationIdList?: [string];
   @Field({ nullable: true })
   unionNo?: number;
   @Field({ nullable: true })
@@ -197,6 +200,9 @@ export class TalentProfile {
 
   @Field({ nullable: true })
   medicalCovidVaccinationStatusNo?: number;
+
+  @Field({ nullable: true })
+  hasOwnTransport?: boolean;
 }
 
 @ObjectType()
@@ -238,4 +244,3 @@ export class Talent {
   @Field(() => [TalentSubmission], { nullable: true })
   submissions?: TalentSubmission[];
 }
-

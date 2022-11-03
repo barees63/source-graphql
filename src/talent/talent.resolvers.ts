@@ -38,6 +38,18 @@ export class TalentResolver {
         talent.profile = profiles?.find(
           (p) => p.elementId == talent.ymcO_ElementID
         );
+        try {
+          if (
+            talent.profile?.destinationIdList == null &&
+            talent.profile?.destinationID
+          ) {
+            talent.profile.destinationIdList = [
+              `${talent.profile.destinationID}`,
+            ];
+          }
+        } catch (e) {
+          console.error(e)
+        }
         talent.submissions = submissions.find(
           (s) => s.length > 0 && s[0].elementId == talent.ymcO_ElementID
         );
@@ -60,7 +72,10 @@ export class TalentSubmissionResolver {
     @Ctx() context: Context
   ): Promise<TalentSubmission[]> {
     try {
-      const submissions = await apiGetTalentSubmissions(context.token, talentId);
+      const submissions = await apiGetTalentSubmissions(
+        context.token,
+        talentId
+      );
       if (includeCalltimes) {
         const promises = [];
         for (const s of submissions) {
