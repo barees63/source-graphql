@@ -203,6 +203,18 @@ export class TalentProfile {
 
   @Field({ nullable: true })
   hasOwnTransport?: boolean;
+
+  @Field({ nullable: true })
+  carManufacturerNo?: number;
+
+  @Field({ nullable: true })
+  carModel?: string;
+
+  @Field({ nullable: true })
+  carColor?: string;
+
+  @Field({ nullable: true })
+  carYear?: string;
 }
 
 @ObjectType()
