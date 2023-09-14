@@ -228,11 +228,16 @@ type Talent {
 
 type TalentProfile {
   bust: Float
+  carColor: String
+  carManufacturerNo: Float
+  carModel: String
+  carYear: String
   chest: Float
   clothingSize: Float
   collar: Float
   cupSize: String
   destinationID: Float
+  destinationIdList: [String!]
   dressSize: Float
   elementId: Float
   elementName: String
@@ -249,6 +254,7 @@ type TalentProfile {
   googlePlaceLongitude: String
   googlePlaceState: String
   hair: Float
+  hasOwnTransport: Boolean
   heightCentimeters: Float
   heightInches: Float
   hips: Float
@@ -259,6 +265,7 @@ type TalentProfile {
   looksLikeList: [String!]
   marketingViaEmail: Boolean
   medicalCovidTestExempt: Boolean
+  medicalCovidVaccinationStatusNo: Float
   mobileNumber: String
   modelDOB: String
   notificationsViaApp: Boolean
