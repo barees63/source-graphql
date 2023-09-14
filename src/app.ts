@@ -1,4 +1,11 @@
 import express from "express";
+import cors from "cors";
+const corsOptions = {
+  origin(origin: any, callback: any) {
+      callback(null, true);
+  },
+  credentials: true
+};
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { graphqlHTTP } from "express-graphql";
@@ -9,6 +16,17 @@ import {
 import { buildSchema } from "type-graphql";
 import { customAuthChecker } from "./auth";
 import { JobResolver } from "./job/job.resolvers";
+import { AuditionResolver } from "./audition/audition.resolvers";
+import { AuditionRoleResolver } from "./audition-role/audition-role.resolvers";
+import { 
+  AuditionTalentImageArchiveResolver, 
+  AuditionTalentVideoArchiveResolver, 
+  AuditionTalentMediaResolver, 
+  AuditionTalentReadyResolver, 
+  AuditionTalentResolver, 
+  AuditionTalentSeenResolver 
+} from "./audition-talent/audition-talent.resolvers";
+import { SourceUserResolver } from "./source-user/source-user.resolvers";
 import {YouMeCoNotificationResolver, YouMeCoTalentResolver} from "./youmeco/youmeco_talent.resolvers";
 import * as Sentry from "@sentry/node";
 import { RewriteFrames } from "@sentry/integrations";
@@ -30,6 +48,15 @@ async function main() {
       JobResolver,
       YouMeCoNotificationResolver,
       YouMeCoTalentResolver,
+      AuditionResolver,
+      AuditionRoleResolver,
+      AuditionTalentResolver,
+      SourceUserResolver,
+      AuditionTalentSeenResolver,
+      AuditionTalentReadyResolver,
+      AuditionTalentMediaResolver,
+      AuditionTalentImageArchiveResolver,
+      AuditionTalentVideoArchiveResolver,
     ],
     emitSchemaFile: true,
     authChecker: customAuthChecker,
@@ -37,11 +64,14 @@ async function main() {
 
   const app = express();
 
+  app.use(cors(corsOptions));
+
   app.use(
     "/graphql",
     graphqlHTTP((req) => {
       return {
         schema,
+        graphiql: true,
         // other options
         context: {
           req: req,

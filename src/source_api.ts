@@ -19,8 +19,26 @@ import {
   YouMeCoTalent,
   YouMeCoTalentOverview,
 } from "./youmeco/youmeco_talent.schema";
+import {
+  Audition
+} from "./audition/audition.schema";
+import {
+  AuditionTalent,
+  AuditionTalentMedia,
+} from "./audition-talent/audition-talent.schema";
+import {
+  AuditionRole,
+} from "./audition-role/audition-role.schema";
+import { 
+  SourceUser,
+  SourceUserAuth
+} from "./source-user/source-user.schema";
+import {
+  GenericMutationResult,
+} from "./generic/generic.schema";
 
 const baseUrl = "https://source-api.syngency.com";
+const baseSourceApiV3Url = "https://api.youmeandco.com/v3";
 
 class LoginResponse {
   success!: boolean;
@@ -31,6 +49,20 @@ class LoginResponse {
     this.success = success;
     this.token = token;
     this.error = error;
+  }
+}
+
+class LoginSourceUserResponse {
+  success!: boolean;
+  token?: string;
+  id?: number;
+  errors?: string[];
+
+  constructor(success: boolean, token?: string, errors?: string[], id?: number) {
+    this.success = success;
+    this.token = token;
+    this.errors = errors;
+    this.id = id;
   }
 }
 
@@ -67,6 +99,34 @@ export const login = async (
   }
 };
 
+
+export const loginSourceUser = async (email: string, password: string): Promise<SourceUserAuth | null> => {
+  const response = await axios.post(`${baseSourceApiV3Url}/authenticate`, {
+    email,
+    password,
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+  });
+  console.log('email', email, 'password', password);
+  if (response.status === 200) {
+    const rsp = response.data as SourceUserAuth;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+      //console.log("loginResponse", response)
+    } else {
+      rsp.success = true;
+    }
+    return rsp;
+  }
+  return null;
+};
+
 export const apiGetTalent = async (token: string): Promise<Talent[]> => {
   const response = await axios.get(`${baseUrl}/api/userelements`, {
     validateStatus: function () {
@@ -83,6 +143,186 @@ export const apiGetTalent = async (token: string): Promise<Talent[]> => {
   }
   return [];
 };
+
+// Source Studio endpoints
+export const apiGetAuditions = async (token: string, jobDateId: number, searchString: string): Promise<Audition[]> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}?searchString=${searchString}`, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    console.log('apiGetAuditions', response.data);
+    return response.data;
+  }
+  return [];
+};
+
+export const apiGetAuditionRoles = async (token: string, jobDateId: number): Promise<AuditionRole[]> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/roles/`, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    return response.data;
+  }
+  return [];
+};
+
+export const apiGetAuditionTalent = async (token: string, jobDateId: number, searchString: string): Promise<AuditionTalent[]> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/?searchString=${searchString ? searchString : ''}`, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    return response.data;
+  }
+  return [];
+};
+
+export const apiGetAuditionTalentMedia = async (token: string, jobDateId: number, jobBriefSupplierElementId: number): Promise<AuditionTalentMedia[]> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/media`, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    return response.data;
+  }
+  return [];
+};
+
+export const apiUpdateAuditionTalentSeen = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, isSeen: boolean, seenTime: string): Promise<AuditionTalent | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/seen`, {
+    isSeen,
+    seenTime,
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as AuditionTalent;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+      rsp.id = jobBriefSupplierElementId;
+      rsp.castingSeen = isSeen;
+    }
+    return rsp;
+  }
+  return null;
+};
+
+export const apiUpdateAuditionTalentReady = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, isReady: boolean): Promise<AuditionTalent | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/ready`, {
+    isReady
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as AuditionTalent;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+      rsp.id = jobBriefSupplierElementId;
+      rsp.castingReady = isReady;
+    }
+    return rsp;
+  }
+  return null;
+};
+
+export const apiUpdateAuditionTalentImageArchived = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, folderElementImageInstanceId: number, isArchived: boolean): Promise<AuditionTalentMedia | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/media/images/${folderElementImageInstanceId}/archive`, {
+    isArchived
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as AuditionTalentMedia;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+      rsp.id = folderElementImageInstanceId;
+      rsp.archived = isArchived;
+    }
+    return rsp;
+  }
+  return null;
+};
+
+export const apiUpdateAuditionTalentVideoArchived = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, folderElementVideoInstanceId: number, isArchived: boolean): Promise<AuditionTalentMedia | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/media/videos/${folderElementVideoInstanceId}/archive`, {
+    isArchived
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as AuditionTalentMedia;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+      rsp.id = folderElementVideoInstanceId;
+      rsp.archived = isArchived;
+    }
+    return rsp;
+  }
+  return null;
+};
+// End: Source Studio endpoints
 
 export const apiGetTalentProfiles = async (
   token: string

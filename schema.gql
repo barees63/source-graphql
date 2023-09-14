@@ -3,6 +3,83 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Audition {
+  city: String!
+  country: String!
+  errors: [String!]
+  eventDate: String!
+  eventDescription: String!
+  id: Float!
+  jobDateDestinationId: Float!
+  jobDateId: Float!
+  jobDateTimeZone: String!
+  jobDestinationID: Float!
+  jobId: Float!
+  jobName: String!
+  jobTimeZone: String!
+  success: Boolean!
+  timezone: String!
+}
+
+type AuditionRole {
+  errors: [String!]
+  folderId: Float!
+  id: Float!
+  roleName: String!
+  success: Boolean!
+}
+
+type AuditionTalent {
+  castingNumber: Float
+  castingReady: Boolean
+  castingSeen: Boolean
+  castingStatus: String
+  city: String!
+  country: String!
+  elementId: Float!
+  errors: [String!]
+  eventDate: String!
+  eventDescription: String!
+  firstName: String
+  folderElementInstanceId: Float!
+  folderId: Float!
+  id: Float!
+  imageUrl: String
+  jobBriefSupplierElementId: Float!
+  jobDateDestinationId: Float!
+  jobDateId: Float!
+  jobDateTimeZone: String!
+  jobDestinationID: Float!
+  jobId: Float!
+  jobName: String!
+  jobTimeZone: String!
+  lastName: String
+  roleName: String!
+  success: Boolean!
+  talentFullName: String!
+  timeSlot: String
+  timezone: String!
+}
+
+type AuditionTalentMedia {
+  archived: Boolean!
+  dateCreated: String
+  description: String
+  elementImageId: Float
+  elementVideoId: Float
+  errors: [String!]
+  folderElementImageId: Float
+  folderElementVideoId: Float
+  id: Float!
+  mediaId: Float!
+  mediaRank: Float!
+  mediaType: String!
+  success: Boolean!
+  thumbnailUrl: String
+  transcodeStatus: String
+  url: String
+}
+
 type AvailabilityRequest {
   eventDescription: String
   extrasWorksheetElementId: Float!
@@ -198,12 +275,31 @@ type Job {
   workRequirements: String
 }
 
+type Mutation {
+  auditionTalentImageArchive(folderElementImageInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
+  auditionTalentReady(isReady: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalent!
+  auditionTalentSeen(isSeen: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!, seenTime: String!): AuditionTalent!
+  auditionTalentVideoArchive(folderElementVideoInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
+  sourceUserAuth(email: String!, password: String!): SourceUserAuth!
+}
+
 type Query {
+  auditionRole(jobDateId: Float!): [AuditionRole!]!
+  auditionTalent(jobDateId: Float!, searchString: String): [AuditionTalent!]!
+  auditionTalentMedia(jobBriefSupplierElementId: Float!, jobDateId: Float!): [AuditionTalentMedia!]!
+  auditions(jobDateId: Float, searchString: String): [Audition!]!
   getJob(folderElementInstanceId: Float, jobId: Float!, talentId: Float!): Job!
   getTalentSubmissions(includeCalltimes: Boolean = false, talentId: Float!): [TalentSubmission!]!
   getTalents(includeSubmissions: Boolean = true): [Talent!]!
   getYouMeCoNotifications(elementIds: [Float!]!, supplierIds: [Float!]!): [YouMeCoNotification!]!
   getYouMeCoTalent: [YouMeCoTalent!]!
+}
+
+type SourceUserAuth {
+  errors: [String!]
+  id: Float
+  success: Boolean!
+  token: String
 }
 
 type Talent {
