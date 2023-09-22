@@ -180,8 +180,8 @@ export const apiGetAuditionRoles = async (token: string, jobDateId: number): Pro
   return [];
 };
 
-export const apiGetAuditionTalent = async (token: string, jobDateId: number, searchString: string): Promise<AuditionTalent[]> => {
-  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/?searchString=${searchString ? searchString : ''}`, {
+export const apiGetAuditionTalent = async (token: string, jobDateId: number, searchString: string, statuses: string, roles: string): Promise<AuditionTalent[]> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/?searchString=${searchString ? searchString : ''}&statuses=${statuses ? statuses : ''}&roles=${roles ? roles : ''}`, {
     validateStatus: function () {
       return true;
     },

@@ -285,7 +285,7 @@ type Mutation {
 
 type Query {
   auditionRole(jobDateId: Float!): [AuditionRole!]!
-  auditionTalent(jobDateId: Float!, searchString: String): [AuditionTalent!]!
+  auditionTalent(jobDateId: Float!, roles: String, searchString: String, statuses: String): [AuditionTalent!]!
   auditionTalentMedia(jobBriefSupplierElementId: Float!, jobDateId: Float!): [AuditionTalentMedia!]!
   auditions(jobDateId: Float, searchString: String): [Audition!]!
   getJob(folderElementInstanceId: Float, jobId: Float!, talentId: Float!): Job!

@@ -20,10 +20,14 @@ export class AuditionTalentResolver {
     jobDateId: number,
     @Arg("searchString", { nullable: true })
     searchString: string,
+    @Arg("statuses", { nullable: true })
+    statuses: string,
+    @Arg("roles", { nullable: true })
+    roles: string,
     @Ctx() context: Context
   ): Promise<AuditionTalent[] | null> {
     try {
-      const auditionTalent = await apiGetAuditionTalent(context.token, jobDateId, searchString);
+      const auditionTalent = await apiGetAuditionTalent(context.token, jobDateId, searchString, statuses,  roles);
       return auditionTalent;
     } catch (e) {
       console.error(e);
