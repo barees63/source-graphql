@@ -322,6 +322,32 @@ export const apiUpdateAuditionTalentVideoArchived = async (token: string, jobDat
   }
   return null;
 };
+
+export const apiUpdateAuditionTalentMediaRanks = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, images: string, videos: string): Promise<GenericMutationResult | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/media/rank`, {
+    images: images ? JSON.parse(images) : [],
+    videos: videos ? JSON.parse(videos) : []
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as GenericMutationResult;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+    }
+    return rsp;
+  }
+  return null;
+};
 // End: Source Studio endpoints
 
 export const apiGetTalentProfiles = async (

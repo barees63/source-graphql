@@ -24,7 +24,8 @@ import {
   AuditionTalentMediaResolver, 
   AuditionTalentReadyResolver, 
   AuditionTalentResolver, 
-  AuditionTalentSeenResolver 
+  AuditionTalentSeenResolver,
+  AuditionTalentMediaRanksResolver
 } from "./audition-talent/audition-talent.resolvers";
 import { SourceUserResolver } from "./source-user/source-user.resolvers";
 import {YouMeCoNotificationResolver, YouMeCoTalentResolver} from "./youmeco/youmeco_talent.resolvers";
@@ -57,6 +58,7 @@ async function main() {
       AuditionTalentMediaResolver,
       AuditionTalentImageArchiveResolver,
       AuditionTalentVideoArchiveResolver,
+      AuditionTalentMediaRanksResolver
     ],
     emitSchemaFile: true,
     authChecker: customAuthChecker,

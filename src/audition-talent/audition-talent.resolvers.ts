@@ -7,7 +7,8 @@ import {
   apiUpdateAuditionTalentReady,
   apiGetAuditionTalentMedia,
   apiUpdateAuditionTalentImageArchived,
-  apiUpdateAuditionTalentVideoArchived
+  apiUpdateAuditionTalentVideoArchived,
+  apiUpdateAuditionTalentMediaRanks
 } from "../source_api";
 import { GenericMutationResult } from "../generic/generic.schema";
 
@@ -150,6 +151,32 @@ export class AuditionTalentVideoArchiveResolver {
   ): Promise<AuditionTalentMedia | null> {
     try {
       const result = await apiUpdateAuditionTalentVideoArchived(context.token, jobDateId, jobBriefSupplierElementId, folderElementVideoInstanceId, isArchived);
+      console.log(result)
+      return result;
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  }
+}
+
+@Resolver(() => GenericMutationResult)
+export class AuditionTalentMediaRanksResolver {
+  @Authorized()
+  @Mutation(() => GenericMutationResult)
+  async auditionTalentMediaRanks(
+    @Arg("jobDateId", { nullable: false })
+    jobDateId: number,
+    @Arg("jobBriefSupplierElementId", { nullable: false })
+    jobBriefSupplierElementId: number,
+    @Arg("images", { nullable: true })
+    images: string,
+    @Arg("videos", { nullable: true })
+    videos: string,
+    @Ctx() context: Context
+  ): Promise<GenericMutationResult | null> {
+    try {
+      const result = await apiUpdateAuditionTalentMediaRanks(context.token, jobDateId, jobBriefSupplierElementId, images, videos);
       console.log(result)
       return result;
     } catch (e) {

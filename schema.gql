@@ -201,6 +201,12 @@ type GeneralNotice {
   timezone: String!
 }
 
+type GenericMutationResult {
+  errors: [String!]
+  id: Float!
+  success: Boolean!
+}
+
 type InformationRequest {
   attachmentUrl: String
   customColumnId: String!
@@ -277,6 +283,7 @@ type Job {
 
 type Mutation {
   auditionTalentImageArchive(folderElementImageInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
+  auditionTalentMediaRanks(images: String, jobBriefSupplierElementId: Float!, jobDateId: Float!, videos: String): GenericMutationResult!
   auditionTalentReady(isReady: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalent!
   auditionTalentSeen(isSeen: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!, seenTime: String!): AuditionTalent!
   auditionTalentVideoArchive(folderElementVideoInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
