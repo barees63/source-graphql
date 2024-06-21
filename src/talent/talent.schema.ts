@@ -255,4 +255,8 @@ export class Talent {
 
   @Field(() => [TalentSubmission], { nullable: true })
   submissions?: TalentSubmission[];
+
+  @Field({ nullable: true })
+  isArchived?: boolean;
+
 }

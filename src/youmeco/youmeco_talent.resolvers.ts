@@ -2,6 +2,7 @@
 
 import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql";
 import { YouMeCoNotification, YouMeCoTalent } from "./youmeco_talent.schema";
+import "ReflectMetadata";
 import {
   apiGetYouMeCoNotifications,
   apiGetYouMeCoTalentOverview,
