@@ -9,6 +9,7 @@ const corsOptions = {
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { graphqlHTTP } from "express-graphql";
+
 import {
   TalentResolver,
   TalentSubmissionResolver,
@@ -16,6 +17,7 @@ import {
 import { buildSchema } from "type-graphql";
 import { customAuthChecker } from "./auth";
 import { JobResolver } from "./job/job.resolvers";
+import { StudioSettingsResolver, StudioSettingsUpsertResolver } from "./studio-settings/studio-settings.resolvers";
 import { AuditionResolver } from "./audition/audition.resolvers";
 import { AuditionRoleResolver } from "./audition-role/audition-role.resolvers";
 import { 
@@ -25,12 +27,14 @@ import {
   AuditionTalentReadyResolver, 
   AuditionTalentResolver, 
   AuditionTalentSeenResolver,
-  AuditionTalentMediaRanksResolver
+  AuditionTalentMediaRanksResolver,
+  AuditionTalentVideoStitchPendingResolver
 } from "./audition-talent/audition-talent.resolvers";
 import { SourceUserResolver } from "./source-user/source-user.resolvers";
 import {YouMeCoNotificationResolver, YouMeCoTalentResolver} from "./youmeco/youmeco_talent.resolvers";
 import * as Sentry from "@sentry/node";
 import { RewriteFrames } from "@sentry/integrations";
+import { error } from "console";
 
 Sentry.init({
   dsn: "https://d88c69c4cb004f6bb13a1dd42c21cdc2@o194157.ingest.sentry.io/4504006707707905",
@@ -49,6 +53,8 @@ async function main() {
       JobResolver,
       YouMeCoNotificationResolver,
       YouMeCoTalentResolver,
+      StudioSettingsResolver,
+      StudioSettingsUpsertResolver,
       AuditionResolver,
       AuditionRoleResolver,
       AuditionTalentResolver,
@@ -58,6 +64,7 @@ async function main() {
       AuditionTalentMediaResolver,
       AuditionTalentImageArchiveResolver,
       AuditionTalentVideoArchiveResolver,
+      AuditionTalentVideoStitchPendingResolver,
       AuditionTalentMediaRanksResolver
     ],
     emitSchemaFile: true,
@@ -73,8 +80,7 @@ async function main() {
     graphqlHTTP((req) => {
       return {
         schema,
-        graphiql: true,
-        // other options
+        graphiql: process.env.NODE_ENV === "development",
         context: {
           req: req,
         },

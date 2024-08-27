@@ -17,8 +17,9 @@ export class AuditionRoleResolver {
     try {
       const auditionRoles = await apiGetAuditionRoles(context.token, jobDateId);
       return auditionRoles;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }

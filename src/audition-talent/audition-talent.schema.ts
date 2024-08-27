@@ -55,6 +55,8 @@ export class AuditionTalent {
   @Field({ nullable: true})
   castingStatus?: string;
   @Field({ nullable: true})
+  timeSlotCheckIn?: string;
+  @Field({ nullable: true})
   castingReady?: boolean;
   @Field({ nullable: true})
   castingSeen?: boolean;

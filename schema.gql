@@ -58,6 +58,7 @@ type AuditionTalent {
   success: Boolean!
   talentFullName: String!
   timeSlot: String
+  timeSlotCheckIn: String
   timezone: String!
 }
 
@@ -287,7 +288,9 @@ type Mutation {
   auditionTalentReady(isReady: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalent!
   auditionTalentSeen(isSeen: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!, seenTime: String!): AuditionTalent!
   auditionTalentVideoArchive(folderElementVideoInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
+  auditionTalentVideoStitchPending(elementId: Float!, elementVideoId: Float!, videos: String): GenericMutationResult!
   sourceUserAuth(email: String!, password: String!): SourceUserAuth!
+  studioSettingsUpsert(cropPhotoToPortrait: Boolean!): StudioSettings!
 }
 
 type Query {
@@ -300,6 +303,7 @@ type Query {
   getTalents(includeSubmissions: Boolean = true): [Talent!]!
   getYouMeCoNotifications(elementIds: [Float!]!, supplierIds: [Float!]!): [YouMeCoNotification!]!
   getYouMeCoTalent: [YouMeCoTalent!]!
+  studioSettings: StudioSettings!
 }
 
 type SourceUserAuth {
@@ -307,6 +311,14 @@ type SourceUserAuth {
   id: Float
   success: Boolean!
   token: String
+}
+
+type StudioSettings {
+  cropPhotoToPortrait: Boolean!
+  errors: [String!]
+  highDefinitionMode: Boolean!
+  producerId: Float!
+  success: Boolean!
 }
 
 type Talent {

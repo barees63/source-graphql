@@ -29,7 +29,10 @@ import {
 import {
   AuditionRole,
 } from "./audition-role/audition-role.schema";
-import { 
+import {
+  StudioSettings
+}  from "./studio-settings/studio-settings.schema";
+import {
   SourceUser,
   SourceUserAuth
 } from "./source-user/source-user.schema";
@@ -145,6 +148,58 @@ export const apiGetTalent = async (token: string): Promise<Talent[]> => {
 };
 
 // Source Studio endpoints
+export const apiGetStudioSettings = async (token: string): Promise<StudioSettings | null> => {
+  const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/settings/`, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    console.log('apiGetStudioSettings error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
+  }
+  return null;
+};
+
+export const apiUpdateStudioSettings = async (token: string, cropPhotoToPortrait: boolean): Promise<StudioSettings | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/settings`, {
+    cropPhotoToPortrait,
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as StudioSettings;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+    }
+    return rsp;
+  } else {
+    console.log('apiUpdateStudioSettings error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
+  }
+  return null;
+};
+
 export const apiGetAuditions = async (token: string, jobDateId: number, searchString: string): Promise<Audition[]> => {
   const response = await axios.get(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}?searchString=${searchString}`, {
     validateStatus: function () {
@@ -159,6 +214,11 @@ export const apiGetAuditions = async (token: string, jobDateId: number, searchSt
   if (response.status === 200) {
     console.log('apiGetAuditions', response.data);
     return response.data;
+  } else {
+    console.log('apiGetAuditions error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return [];
 };
@@ -176,6 +236,11 @@ export const apiGetAuditionRoles = async (token: string, jobDateId: number): Pro
   });
   if (response.status === 200) {
     return response.data;
+  } else {
+    console.log('apiGetAuditionRoles error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return [];
 };
@@ -193,6 +258,11 @@ export const apiGetAuditionTalent = async (token: string, jobDateId: number, sea
   });
   if (response.status === 200) {
     return response.data;
+  } else {
+    console.log('apiGetAuditionTalent error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return [];
 };
@@ -210,6 +280,11 @@ export const apiGetAuditionTalentMedia = async (token: string, jobDateId: number
   });
   if (response.status === 200) {
     return response.data;
+  } else {
+    console.log('apiGetAuditionTalentMedia error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return [];
 };
@@ -238,6 +313,11 @@ export const apiUpdateAuditionTalentSeen = async (token: string, jobDateId: numb
       rsp.castingSeen = isSeen;
     }
     return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentSeen error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return null;
 };
@@ -265,6 +345,11 @@ export const apiUpdateAuditionTalentReady = async (token: string, jobDateId: num
       rsp.castingReady = isReady;
     }
     return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentReady error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return null;
 };
@@ -292,6 +377,11 @@ export const apiUpdateAuditionTalentImageArchived = async (token: string, jobDat
       rsp.archived = isArchived;
     }
     return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentImageArchived error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return null;
 };
@@ -319,6 +409,41 @@ export const apiUpdateAuditionTalentVideoArchived = async (token: string, jobDat
       rsp.archived = isArchived;
     }
     return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentVideoArchived error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
+  }
+  return null;
+};
+
+export const apiUpdateAuditionTalentVideoStitchPending = async (token: string, elementId: number, elementVideoId: number, videos: string): Promise<GenericMutationResult | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/element/${elementId}/videos/${elementVideoId}/stitchpending`, {
+    videos: videos ? videos : []
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as GenericMutationResult;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+    } else {
+      rsp.success = true;
+    }
+    return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentVideoStitchPending error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return null;
 };
@@ -345,6 +470,11 @@ export const apiUpdateAuditionTalentMediaRanks = async (token: string, jobDateId
       rsp.success = true;
     }
     return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentMediaRanks error', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
   }
   return null;
 };

@@ -8,7 +8,8 @@ import {
   apiGetAuditionTalentMedia,
   apiUpdateAuditionTalentImageArchived,
   apiUpdateAuditionTalentVideoArchived,
-  apiUpdateAuditionTalentMediaRanks
+  apiUpdateAuditionTalentMediaRanks,
+  apiUpdateAuditionTalentVideoStitchPending
 } from "../source_api";
 import { GenericMutationResult } from "../generic/generic.schema";
 
@@ -30,8 +31,9 @@ export class AuditionTalentResolver {
     try {
       const auditionTalent = await apiGetAuditionTalent(context.token, jobDateId, searchString, statuses,  roles);
       return auditionTalent;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -51,8 +53,9 @@ export class AuditionTalentMediaResolver {
     try {
       const auditionTalentMedia = await apiGetAuditionTalentMedia(context.token, jobDateId, jobBriefSupplierElementId);
       return auditionTalentMedia;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -77,8 +80,9 @@ export class AuditionTalentSeenResolver {
       const result = await apiUpdateAuditionTalentSeen(context.token, jobDateId, jobBriefSupplierElementId, isSeen, seenTime);
       console.log(result)
       return result;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -101,8 +105,9 @@ export class AuditionTalentReadyResolver {
     try {
       const result = await apiUpdateAuditionTalentReady(context.token, jobDateId, jobBriefSupplierElementId, isReady);
       return result;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -127,8 +132,9 @@ export class AuditionTalentImageArchiveResolver {
       const result = await apiUpdateAuditionTalentImageArchived(context.token, jobDateId, jobBriefSupplierElementId, folderElementImageInstanceId, isArchived);
       console.log(result)
       return result;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -153,8 +159,34 @@ export class AuditionTalentVideoArchiveResolver {
       const result = await apiUpdateAuditionTalentVideoArchived(context.token, jobDateId, jobBriefSupplierElementId, folderElementVideoInstanceId, isArchived);
       console.log(result)
       return result;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
+    }
+    return null;
+  }
+}
+
+@Resolver(() => GenericMutationResult)
+export class AuditionTalentVideoStitchPendingResolver {
+  @Authorized()
+  @Mutation(() => GenericMutationResult)
+  async auditionTalentVideoStitchPending(
+    @Arg("elementId", { nullable: false })
+    elementId: number,
+    @Arg("elementVideoId", { nullable: false })
+    elementVideoId: number,
+    @Arg("videos", { nullable: true })
+    videos: string,
+    @Ctx() context: Context
+  ): Promise<GenericMutationResult | null> {
+    try {
+      const result = await apiUpdateAuditionTalentVideoStitchPending(context.token, elementId, elementVideoId, videos);
+      console.log(result)
+      return result;
+    } catch (e:any) {
+      console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }
@@ -179,8 +211,9 @@ export class AuditionTalentMediaRanksResolver {
       const result = await apiUpdateAuditionTalentMediaRanks(context.token, jobDateId, jobBriefSupplierElementId, images, videos);
       console.log(result)
       return result;
-    } catch (e) {
+    } catch (e:any) {
       console.error(e);
+      throw new Error(e.message);
     }
     return null;
   }

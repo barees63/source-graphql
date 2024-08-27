@@ -8,7 +8,7 @@ import {
 @Resolver(() => Audition)
 export class AuditionResolver {
   @Authorized()
-  @Query(() => [Audition])
+  @Query(() => [Audition] || null)
   async auditions(
     @Arg("jobDateId", { nullable: true })
     jobDateId: number,
@@ -19,9 +19,10 @@ export class AuditionResolver {
     try {
       const auditions = await apiGetAuditions(context.token, jobDateId, searchString);
       return auditions;
-    } catch (e) {
-      console.error(e);
+    } catch (e:any) {
+      console.error('error!', e.message);
+      throw new Error(e.message);
     }
-    return null;
+    return [];
   }
 }
