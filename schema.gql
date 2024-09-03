@@ -289,6 +289,7 @@ type Mutation {
   auditionTalentSeen(isSeen: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!, seenTime: String!): AuditionTalent!
   auditionTalentVideoArchive(folderElementVideoInstanceId: Float!, isArchived: Boolean!, jobBriefSupplierElementId: Float!, jobDateId: Float!): AuditionTalentMedia!
   auditionTalentVideoStitchPending(elementId: Float!, elementVideoId: Float!, videos: String): GenericMutationResult!
+  auditionTalentVideoTrimPending(elementId: Float!, elementVideoId: Float!, trimEnd: String!, trimStart: String!, url: String!): GenericMutationResult!
   sourceUserAuth(email: String!, password: String!): SourceUserAuth!
   studioSettingsUpsert(cropPhotoToPortrait: Boolean!): StudioSettings!
 }

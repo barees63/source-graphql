@@ -448,6 +448,39 @@ export const apiUpdateAuditionTalentVideoStitchPending = async (token: string, e
   return null;
 };
 
+export const apiUpdateAuditionTalentVideoTrimPending = async (token: string, elementId: number, elementVideoId: number, url: string, trimStart: string, trimEnd: string): Promise<GenericMutationResult | null> => {
+  const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/element/${elementId}/videos/${elementVideoId}/trimpending`, {
+    url: url,
+    trimStart: trimStart,
+    trimEnd: trimEnd
+  }, {
+    validateStatus: function () {
+      return true;
+    },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const rsp = response.data as GenericMutationResult;
+    if(rsp.errors && rsp.errors.length > 0) {
+      rsp.success = false;
+      console.log('apiUpdateAuditionTalentVideoTrimPending error A', response.status, response.statusText, response.data);
+    } else {
+      rsp.success = true;
+    }
+    return rsp;
+  } else {
+    console.log('apiUpdateAuditionTalentVideoTrimPending error B', response.status, response.statusText, response.data);
+    if(response.status === 401){
+      throw new Error("UNAUTHORIZED");
+    }
+  }
+  return null;
+};
+
 export const apiUpdateAuditionTalentMediaRanks = async (token: string, jobDateId: number, jobBriefSupplierElementId: number, images: string, videos: string): Promise<GenericMutationResult | null> => {
   const response = await axios.put(`${baseSourceApiV3Url}/studio/v2/auditions/${jobDateId}/talent/${jobBriefSupplierElementId}/media/rank`, {
     images: images ? JSON.parse(images) : [],

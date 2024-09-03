@@ -28,7 +28,8 @@ import {
   AuditionTalentResolver, 
   AuditionTalentSeenResolver,
   AuditionTalentMediaRanksResolver,
-  AuditionTalentVideoStitchPendingResolver
+  AuditionTalentVideoStitchPendingResolver,
+  AuditionTalentVideoTrimPendingResolver
 } from "./audition-talent/audition-talent.resolvers";
 import { SourceUserResolver } from "./source-user/source-user.resolvers";
 import {YouMeCoNotificationResolver, YouMeCoTalentResolver} from "./youmeco/youmeco_talent.resolvers";
@@ -65,6 +66,7 @@ async function main() {
       AuditionTalentImageArchiveResolver,
       AuditionTalentVideoArchiveResolver,
       AuditionTalentVideoStitchPendingResolver,
+      AuditionTalentVideoTrimPendingResolver,
       AuditionTalentMediaRanksResolver
     ],
     emitSchemaFile: true,

@@ -9,7 +9,8 @@ import {
   apiUpdateAuditionTalentImageArchived,
   apiUpdateAuditionTalentVideoArchived,
   apiUpdateAuditionTalentMediaRanks,
-  apiUpdateAuditionTalentVideoStitchPending
+  apiUpdateAuditionTalentVideoStitchPending,
+  apiUpdateAuditionTalentVideoTrimPending
 } from "../source_api";
 import { GenericMutationResult } from "../generic/generic.schema";
 
@@ -182,6 +183,35 @@ export class AuditionTalentVideoStitchPendingResolver {
   ): Promise<GenericMutationResult | null> {
     try {
       const result = await apiUpdateAuditionTalentVideoStitchPending(context.token, elementId, elementVideoId, videos);
+      console.log(result)
+      return result;
+    } catch (e:any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
+    return null;
+  }
+}
+
+@Resolver(() => GenericMutationResult)
+export class AuditionTalentVideoTrimPendingResolver {
+  @Authorized()
+  @Mutation(() => GenericMutationResult)
+  async auditionTalentVideoTrimPending(
+    @Arg("elementId", { nullable: false })
+    elementId: number,
+    @Arg("elementVideoId", { nullable: false })
+    elementVideoId: number,
+    @Arg("url", { nullable: false })
+    url: string,
+    @Arg("trimStart", { nullable: false })
+    trimStart: string,
+    @Arg("trimEnd", { nullable: false })
+    trimEnd: string,
+    @Ctx() context: Context
+  ): Promise<GenericMutationResult | null> {
+    try {
+      const result = await apiUpdateAuditionTalentVideoTrimPending(context.token, elementId, elementVideoId, url, trimStart,  trimEnd);
       console.log(result)
       return result;
     } catch (e:any) {
