@@ -1,17 +1,45 @@
 // noinspection UnnecessaryLocalVariableJS
 
-import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql";
-import { YouMeCoNotification, YouMeCoTalent } from "./youmeco_talent.schema";
 import "ReflectMetadata";
+import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
+import { Context } from "../context";
 import {
   apiGetYouMeCoNotifications,
   apiGetYouMeCoTalentOverview,
   apiGetYouMeCoTalents,
 } from "../source_api";
-import { Context } from "../context";
+import { YouMeCoNotification, YouMeCoTalent } from "./youmeco_talent.schema";
+
+interface YouMeCoElement {
+  elementId: number;
+  supplierId: number;
+}
+
 
 @Resolver(() => YouMeCoNotification)
 export class YouMeCoNotificationResolver {
+  @Authorized()
+  @Query(() => [YouMeCoNotification])
+  async getYouMeCoNotificationsEx(
+    @Arg("elements", () => String)
+    elements: string,
+    @Ctx() context: Context
+  ): Promise<YouMeCoNotification[]> {
+    try {
+      const e = JSON.parse(elements) as YouMeCoElement[]
+      const promises = e.map((element) => apiGetYouMeCoNotifications(
+        context.token,
+        element.elementId,
+        element.supplierId,
+      ));
+      const notifications = await Promise.all(promises);
+      return notifications.flat();
+    } catch (e) {
+      console.error(e);
+    }
+    return [];
+  }
+
   @Authorized()
   @Query(() => [YouMeCoNotification])
   async getYouMeCoNotifications(
@@ -21,19 +49,19 @@ export class YouMeCoNotificationResolver {
     supplierIds: number[],
     @Ctx() context: Context
   ): Promise<YouMeCoNotification[]> {
-    try {
-      //console.log(`elementIds: ${JSON.stringify(elementIds)} supplierIds: ${JSON.stringify(supplierIds)}`);
-      const promises = [];
-      for (const [i, elementId] of elementIds.entries()) {
-        promises.push(
-          apiGetYouMeCoNotifications(context.token, elementId, supplierIds[i])
-        );
-      }
-      const notifications = await Promise.all(promises);
-      return notifications.flat();
-    } catch (e) {
-      console.error(e);
-    }
+    // try {
+    //   //console.log(`elementIds: ${JSON.stringify(elementIds)} supplierIds: ${JSON.stringify(supplierIds)}`);
+    //   const promises = [];
+    //   for (const [i, elementId] of elementIds.entries()) {
+    //     promises.push(
+    //       apiGetYouMeCoNotifications(context.token, elementId, supplierIds[i])
+    //     );
+    //   }
+    //   const notifications = await Promise.all(promises);
+    //   return notifications.flat();
+    // } catch (e) {
+    //   console.error(e);
+    // }
     return [];
   }
 }
