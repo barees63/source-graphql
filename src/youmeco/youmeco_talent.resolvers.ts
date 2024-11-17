@@ -1,6 +1,6 @@
 // noinspection UnnecessaryLocalVariableJS
 
-import "ReflectMetadata";
+import "reflect-metadata";
 import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
 import { Context } from "../context";
 import {
