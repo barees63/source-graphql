@@ -18,6 +18,7 @@ interface YouMeCoElement {
 
 @Resolver(() => YouMeCoNotification)
 export class YouMeCoNotificationResolver {
+
   @Authorized()
   @Query(() => [YouMeCoNotification])
   async getYouMeCoNotificationsEx(
